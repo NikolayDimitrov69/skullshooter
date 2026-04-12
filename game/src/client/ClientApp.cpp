@@ -1,8 +1,9 @@
 #include "pch.h"
+#include "ClientApp.h"
 
-int main()
+void ClientApp::run()
 {
-	sf::RenderWindow window( sf::VideoMode( { 200, 200 } ), "skibidi67!" );
+    sf::RenderWindow window( sf::VideoMode( { 200, 200 } ), "skibidi67!" );
 	sf::CircleShape shape( 100.f );
 	shape.setFillColor( sf::Color::Green );
 
