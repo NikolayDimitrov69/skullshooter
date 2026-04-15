@@ -1,5 +1,7 @@
 #include "pch.h"
+
 #include "ClientApp.h"
+
 #include "core/GameState.h"
 
 void ClientApp::run()
@@ -20,4 +22,20 @@ void ClientApp::run()
 		window.draw( shape );
 		window.display();
 	}
+}
+
+void ClientApp::stop()
+{
+}
+
+void ClientApp::update(float deltaTime)
+{
+}
+
+void ClientApp::load()
+{
+}
+
+void ClientApp::unload()
+{
 }

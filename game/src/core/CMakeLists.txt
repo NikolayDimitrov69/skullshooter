@@ -15,3 +15,5 @@ target_precompile_headers(core PRIVATE
 target_link_libraries(core PUBLIC
     SFML::System
 )
+
+target_compile_options(core PRIVATE  /FI${CMAKE_CURRENT_SOURCE_DIR}/pch.h)

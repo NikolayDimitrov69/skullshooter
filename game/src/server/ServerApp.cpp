@@ -4,4 +4,8 @@
 
 void ServerApp::run()
 {
+	while (true)
+	{
+		break;
+	}
 }
