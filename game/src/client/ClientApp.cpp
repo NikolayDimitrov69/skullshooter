@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ClientApp.h"
+#include "core/GameState.h"
 
 void ClientApp::run()
 {

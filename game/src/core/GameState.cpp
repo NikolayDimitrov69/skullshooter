@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "GameState.h"
+#include <iostream>
 
 int temp()
 {
-    return 0;
+	std::cout << "temp" << std::endl;
+	return 0;
 }

@@ -3,7 +3,7 @@ add_library(client_lib
 )
 
 target_include_directories(client_lib PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src
 )
 
 target_link_libraries(client_lib PUBLIC client_common)

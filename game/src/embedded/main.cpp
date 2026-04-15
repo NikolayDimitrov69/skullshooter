@@ -1,6 +1,6 @@
-#include "pch.h"
-#include "ServerApp.h"
-#include "ClientApp.h"
+#include "client/pch.h"
+#include "server/ServerApp.h"
+#include "client/ClientApp.h"
 
 int main()
 {
