@@ -4,6 +4,7 @@
 
 int main()
 {
+	// this is not really how the server and client should be run, but for testing purposes it is fine
 	ServerApp serverApp;
 	serverApp.run();
 
