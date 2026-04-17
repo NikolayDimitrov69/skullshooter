@@ -1,4 +1,5 @@
 add_library(server_lib
+    ClientRegistry.cpp
     ServerApp.cpp
 )
 

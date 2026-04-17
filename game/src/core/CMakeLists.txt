@@ -1,4 +1,5 @@
 add_library(core
+    Assert.cpp
     GameState.cpp
 )
 

@@ -1,14 +1,32 @@
 #include "client/pch.h"
+
 #include "server/ServerApp.h"
 #include "client/ClientApp.h"
 
 int main()
 {
-	// this is not really how the server and client should be run, but for testing purposes it is fine
-	ServerApp serverApp;
-	serverApp.run();
+    ServerApp serverApp;
+    std::thread serverThread(
+        [&serverApp]()
+        {
+            if (!serverApp.start())
+            {
+                std::cerr << "Server thread failed to start: " << serverApp.getLastError() << '\n';
+                return;
+            }
 
-	ClientApp clientApp;
-	clientApp.run();
+            serverApp.run();
+        }
+    );
+
+    ClientApp clientApp;
+    clientApp.run();
+
+    serverApp.stop();
+    if (serverThread.joinable())
+    {
+        serverThread.join();
+    }
+
     return 0;
 }

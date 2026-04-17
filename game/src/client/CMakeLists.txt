@@ -1,5 +1,7 @@
 add_library(client_lib
     ClientApp.cpp
+    Game.cpp
+    Player.cpp
 )
 
 target_include_directories(client_lib PUBLIC

@@ -2,40 +2,112 @@
 
 #include "ClientApp.h"
 
-#include "core/GameState.h"
+#include "core/NetworkProtocol.h"
+
+ClientApp::ClientApp() = default;
 
 void ClientApp::run()
 {
-    sf::RenderWindow window( sf::VideoMode( { 200, 200 } ), "skibidi67!" );
-	sf::CircleShape shape( 100.f );
-	shape.setFillColor( sf::Color::Green );
+    if (!load())
+    {
+        return;
+    }
 
-	while ( window.isOpen() )
+    sf::Clock frameClock;
+
+	while (running && window && window->isOpen())
 	{
-		while ( const std::optional event = window.pollEvent() )
-		{
-			if ( event->is<sf::Event::Closed>() )
-				window.close();
-		}
+        const float deltaTime = frameClock.restart().asSeconds();
 
-		window.clear();
-		window.draw( shape );
-		window.display();
+        processEvents();
+        update(deltaTime);
+        render();
 	}
+
+    unload();
 }
 
 void ClientApp::stop()
 {
+    running = false;
+
+    if (window)
+    {
+        window->close();
+    }
+}
+
+void ClientApp::processEvents()
+{
+    while (const std::optional event = window->pollEvent())
+    {
+        if (event->is<sf::Event::Closed>())
+        {
+            stop();
+        }
+        else if (event->is<sf::Event::FocusLost>())
+        {
+            game->setWindowFocused(false);
+        }
+        else if (event->is<sf::Event::FocusGained>())
+        {
+            game->setWindowFocused(true);
+        }
+    }
 }
 
 void ClientApp::update(float deltaTime)
 {
+    game->pollInputs();
+    game->update(deltaTime);
 }
 
-void ClientApp::load()
+void ClientApp::render()
 {
+    game->render();
+}
+
+bool ClientApp::load()
+{
+    std::cout << "Enter server IP (leave empty for localhost): ";
+
+    std::string serverIpInput;
+    std::getline(std::cin, serverIpInput);
+
+    sf::IpAddress serverAddress = sf::IpAddress::LocalHost;
+    if (!serverIpInput.empty())
+    {
+        const std::optional<sf::IpAddress> resolvedAddress = sf::IpAddress::resolve(serverIpInput);
+        if (!resolvedAddress.has_value())
+        {
+            std::cerr << "Client failed to resolve server IP: " << serverIpInput << '\n';
+            return false;
+        }
+
+        serverAddress = *resolvedAddress;
+    }
+
+    window = std::make_unique<sf::RenderWindow>(
+        sf::VideoMode({net::WindowWidth, net::WindowHeight}),
+        "skullshooter client"
+    );
+    window->setFramerateLimit(60);
+
+    game = std::make_unique<Game>(*window, serverAddress);
+    running = game->start();
+    return running;
 }
 
 void ClientApp::unload()
 {
+    if (game)
+    {
+        game->stop();
+        game.reset();
+    }
+
+    if (window)
+    {
+        window.reset();
+    }
 }
